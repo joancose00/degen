@@ -39,7 +39,9 @@ export function CallList() {
     abi: CALL_PLATFORM_ABI,
     functionName: 'getAllCalls',
     args: [BigInt(offset), BigInt(limit), true],
-    enabled: viewType === 'all',
+    query: {
+      enabled: viewType === 'all',
+    },
   })
 
   const { data: userCallsData, isLoading: loadingUser } = useReadContract({
@@ -47,7 +49,9 @@ export function CallList() {
     abi: CALL_PLATFORM_ABI,
     functionName: 'getCallsByUser',
     args: [address!, BigInt(offset), BigInt(limit), true],
-    enabled: viewType === 'user' && !!address,
+    query: {
+      enabled: viewType === 'user' && !!address,
+    },
   })
 
   const isLoading = viewType === 'all' ? loadingAll : loadingUser
