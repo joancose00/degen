@@ -74,7 +74,16 @@ export function CallList() {
 
   const formatGain = (gain: bigint) => {
     if (gain === 0n) return '0%'
-    return `${(Number(gain) / 100).toFixed(2)}%`
+    // Convert from bigint to number and divide by 10000 (basis points)
+    // or divide by 100 if the value is already in percentage * 100 format
+    const gainNumber = Number(gain)
+    // If the value seems too large, it's likely in wei format
+    if (gainNumber > 1000000000000) {
+      // Convert from wei to percentage (divide by 1e16 for percentage)
+      return `${(gainNumber / 1e16).toFixed(2)}%`
+    }
+    // Otherwise treat as basis points (1 = 0.01%)
+    return `${(gainNumber / 100).toFixed(2)}%`
   }
 
   const getDexScreenerUrl = (chainId: number, tokenAddress: string) => {
